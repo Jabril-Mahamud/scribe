@@ -8,7 +8,8 @@
 - [x] Tidy up build process
 - [x] Actually set up a db (vercel postgres)
 - [x] Attach Db to UI -> building DB schema
-- [ ] Add Authentication
+- [X] Add Authentication
+- [X] "taint (server-only)
 - [ ] Add audio uploading
 - [ ] Error management (w/Sentry)
 - [ ] ROuting/audio page (parallel route)
