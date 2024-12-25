@@ -5,13 +5,13 @@
 
 - [x] make it deploy(vercel)
 - [x] scaffold basic UI with mock data
-- [] Tidy up build process
-- [] Actually set up a db (vercel postgres)
-- [] Attach Db to UI
-- [] Add Authentication
-- [] Add audio uploading
-- [] Error management (w/Sentry)
-- [] ROuting/audio page (parallel route)
-- [] Delete Button (w/server Actions)
-- [] Analytics(posthig)
-- [] Ratelimiting(upstash)
+- [x] Tidy up build process
+- [x] Actually set up a db (vercel postgres)
+- [x] Attach Db to UI -> building DB schema
+- [ ] Add Authentication
+- [ ] Add audio uploading
+- [ ] Error management (w/Sentry)
+- [ ] ROuting/audio page (parallel route)
+- [ ] Delete Button (w/server Actions)
+- [ ] Analytics(posthig)
+- [ ] Ratelimiting(upstash)
