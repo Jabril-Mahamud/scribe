@@ -9,8 +9,8 @@
 - [x] Actually set up a db (vercel postgres)
 - [x] Attach Db to UI -> building DB schema
 - [X] Add Authentication
-- [] "taint (server-only)
-- [] Use Next/Image component
+- [ ] "taint (server-only)
+- [ ] Use Next/Image component
 - [ ] Add audio uploading
 - [ ] Error management (w/Sentry)
 - [ ] ROuting/audio page (parallel route)
