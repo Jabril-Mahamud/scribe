@@ -1,7 +1,6 @@
 import "~/styles/globals.css";
 import "@uploadthing/react/styles.css";
 
-
 import { ClerkProvider } from "@clerk/nextjs";
 
 import { GeistSans } from "geist/font/sans";
@@ -17,24 +16,24 @@ export const metadata: Metadata = {
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
-
 export default function RootLayout({
   children,
-}: Readonly<{ children: React.ReactNode }>) {
+  modal,
+}: Readonly<{ 
+  children: React.ReactNode;
+  modal: React.ReactNode;
+}>) {
   return (
     <ClerkProvider>
-    <html lang="en">
-      <NextSSRPlugin
-       
-       
-       
-       routerConfig={extractRouterConfig(ourFileRouter)}
-       />
-      <body className={`${GeistSans.variable} flex flex-col gap-4`}>
-        <TopNav />
-        {children}
-      </body>
-    </html>
+      <html lang="en">
+        <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
+        <body className={`${GeistSans.variable} flex flex-col gap-4`}>
+          <TopNav />
+          {children}
+          {modal}
+          <div id="modal-root" />
+        </body>
+      </html>
     </ClerkProvider>
   );
 }
