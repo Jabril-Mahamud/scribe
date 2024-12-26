@@ -9,8 +9,8 @@
 - [x] Attach Db to UI -> building DB schema
 - [x] Add Authentication
 - [x] Add Image uploading
-- [ ] "taint (server-only)
-- [ ] Use Next/Image component
+- [x] "taint (server-only)
+- [x] Use Next/Image component
 - [ ] Error management (w/Sentry)
 - [ ] ROuting/audio page (parallel route)
 - [ ] Delete Button (w/server Actions)
