@@ -1,6 +1,5 @@
 # T3 GALLERY
 
-
 ## TODO
 
 - [x] make it deploy(vercel)
@@ -8,10 +7,10 @@
 - [x] Tidy up build process
 - [x] Actually set up a db (vercel postgres)
 - [x] Attach Db to UI -> building DB schema
-- [X] Add Authentication
+- [x] Add Authentication
+- [x] Add Image uploading
 - [ ] "taint (server-only)
 - [ ] Use Next/Image component
-- [ ] Add audio uploading
 - [ ] Error management (w/Sentry)
 - [ ] ROuting/audio page (parallel route)
 - [ ] Delete Button (w/server Actions)
