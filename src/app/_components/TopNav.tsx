@@ -1,5 +1,5 @@
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
-import { SimpleUploadButton } from "./custom-upload-button-start";
+import { SimpleUploadButton } from "./simple-upload-button";
 
 export function TopNav() {
   
