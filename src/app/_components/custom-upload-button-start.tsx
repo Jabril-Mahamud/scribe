@@ -2,9 +2,10 @@
 
 import { useRouter } from "next/navigation";
 import { useUploadThing } from "~/utils/uploadthing";
-import { toast } from "sonner"
+import { toast } from "sonner";
+import React from "react";
 
-// inferred input off useUploadThing
+// Inferred input off useUploadThing
 type Input = Parameters<typeof useUploadThing>;
 
 const useUploadThingInputProps = (...args: Input) => {
@@ -14,10 +15,38 @@ const useUploadThingInputProps = (...args: Input) => {
     if (!e.target.files) return;
 
     const selectedFiles = Array.from(e.target.files);
-    const result = await $ut.startUpload(selectedFiles);
 
-    console.log("uploaded files", result);
-    // TODO: persist result in state maybe?
+    // Trigger upload start toast
+    toast(
+      <div className="flex items-center gap-2 text-white">
+        <LoadingSpinnerSVG /> <span>Uploading...</span>
+      </div>,
+      {
+        duration: 100000,
+        id: "upload-begin",
+        style: { background: "#000", borderRadius: "8px" }, // Add custom styling
+      }
+    );
+
+    try {
+      const result = await $ut.startUpload(selectedFiles);
+
+      console.log("uploaded files", result);
+      toast.dismiss("upload-begin");
+      toast("Upload Complete!", {
+        duration: 5000,
+        id: "upload-complete",
+        style: { background: "#16a34a", color: "#fff", borderRadius: "8px" },
+      });
+      // TODO: Persist result in state or trigger actions if needed
+    } catch (error) {
+      toast.dismiss("upload-begin");
+      toast("Upload Failed. Please try again.", {
+        duration: 5000,
+        id: "upload-error",
+        style: { background: "#dc2626", color: "#fff", borderRadius: "8px" },
+      });
+    }
   };
 
   return {
@@ -49,30 +78,62 @@ function UploadSVG() {
   );
 }
 
+function LoadingSpinnerSVG() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className="spinner"
+      viewBox="0 0 50 50"
+      width="50"
+      height="50"
+    >
+      <circle
+        cx="25"
+        cy="25"
+        r="20"
+        stroke="currentColor"
+        strokeWidth="4"
+        fill="none"
+        strokeDasharray="100"
+        strokeDashoffset="75"
+      />
+      <style>
+        {`
+          .spinner {
+            transform-origin: center;
+            animation: spin 0.75s linear infinite;
+          }
+          @keyframes spin {
+            100% {
+              transform: rotate(360deg);
+            }
+          }
+        `}
+      </style>
+    </svg>
+  );
+}
+
 export function SimpleUploadButton() {
   const router = useRouter();
 
   const { inputProps } = useUploadThingInputProps("imageUploader", {
     onUploadBegin() {
-      toast("Uploading...",{
-        duration: 100000,
-        id: "upload-begin",
-      });
+      // Custom action on upload start, if any
     },
     onClientUploadComplete() {
-      toast.dismiss("upload-begin");
-      toast("Uploade Complete!",{
-        duration: 100000,
-        id: "upload-complete",
-      });
       router.refresh();
     },
   });
+
   return (
-    <div className="">
-      <label htmlFor="upload-button"
-      className="cursor-pointer">
+    <div>
+      <label
+        htmlFor="upload-button"
+        className="flex cursor-pointer items-center"
+      >
         <UploadSVG />
+        <span className="ml-2">Upload Image</span>
       </label>
       <input
         id="upload-button"
