@@ -1,6 +1,6 @@
 import { getImage } from "~/server/queries";
 import { Modal } from "./modal";
-import FullPageImageView from "~/server/full-image-page";
+import FullPageImageView from "~/components/full-image-page";
 
 export default function PhotoModal({
   params: { id: photoId },
