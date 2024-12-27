@@ -7,10 +7,10 @@ import { useEffect } from "react";
 if (typeof window !== "undefined") {
   posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY!, {
     api_host: "/ingest",
-    ui_host: "https://eu.posthog.com",
-    person_profiles: "identified_only", // or 'always' to create profiles for anonymous users as well
+    ui_host: "https://app.posthog.com",
   });
 }
+
 export function CSPostHogProvider({ children }: { children: React.ReactNode }) {
   return (
     <PostHogProvider client={posthog}>
@@ -33,7 +33,6 @@ function PostHogAuthWrapper({ children }: { children: React.ReactNode }) {
       posthog.reset();
     }
   }, [auth, userInfo]);
+
   return children;
 }
-
-export default PostHogAuthWrapper;
