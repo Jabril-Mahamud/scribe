@@ -1,6 +1,7 @@
 import { SignedIn, SignedOut } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
+import posthog from "posthog-js";
 import { db } from "~/server/db";
 import { getMyImages } from "~/server/queries";
 
@@ -34,6 +35,7 @@ export default async function HomePage() {
   const images = await db.query.images.findMany({
     orderBy: (model, { desc }) => desc(model.id),
   });
+  posthog.capture("home_page");
   console.log(images);
 
   return (
