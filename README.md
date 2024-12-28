@@ -1,4 +1,14 @@
 # T3 GALLERY
+ ### Tech Stack
+
+    Framework: **Next.js** - A React framework for server-side rendering and static site generation.
+    Styling: **Tailwind CSS** - A utility-first CSS framework for creating custom UI designs.
+    Database: **Vercel Postgres** - A serverless PostgreSQL solution by Vercel.
+    ORM: **Drizzle ORM** - A lightweight TypeScript ORM for SQL databases.
+    Authentication: **Clerk** - A complete user management and authentication platform.
+    Error Monitoring: **Sentry** - Tracks and fixes application errors in real-time.
+    Analytics: **PostHog** - A product analytics suite for understanding user behavior.
+    Deployment: **Vercel** - A modern hosting platform for Next.js applications.
 
 ## TODO
 
