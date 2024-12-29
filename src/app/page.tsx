@@ -22,6 +22,7 @@ async function Images() {
             height={192}
             width={192}
             alt="Image Name"
+            className="hover:motion-preset-pulse-sm"
           />
           <div>{image.name}</div>
           </Link>
