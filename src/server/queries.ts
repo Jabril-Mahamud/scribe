@@ -55,16 +55,24 @@ export async function deleteImage(id: number) {
     .delete(images)
     .where(and(eq(images.id, id), eq(images.userId, user.userId)));
 
+  analyticsServerClient.capture({
+    distinctId: user.userId,
+    event: "delete image 🗑️",
+    properties: {
+      imageId: id,
+    },
+  });
 
-    analyticsServerClient.capture({
-      distinctId: user.userId,
-      event: "delete image 🗑️",
-      properties: {
-        imageId: id,
-      },
-    });
-    
-  
-    // revalidatePath("/")
-    redirect("/")
+  // revalidatePath("/")
+  redirect("/");
+}
+
+export async function getMyAudio() {
+  const user = await auth();
+  if (!user?.userId) throw new Error("Unauthorized");
+
+  return await db.query.audio.findMany({
+    where: (model, { eq }) => eq(model.userId, user.userId),
+    orderBy: (model, { desc }) => desc(model.id),
+  });
 }

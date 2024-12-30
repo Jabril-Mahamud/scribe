@@ -2,7 +2,7 @@ import { createUploadthing, type FileRouter } from "uploadthing/next";
 import { UploadThingError } from "uploadthing/server";
 import { auth } from "@clerk/nextjs/server";
 import { db } from "~/server/db";
-import { images } from "~/server/db/schema";
+import { audio, images } from "~/server/db/schema";
 
 const f = createUploadthing();
 
@@ -16,32 +16,34 @@ export const ourFileRouter = {
     },
   })
     .middleware(async ({ req }) => {
-      // This code runs on your server before upload
       const user = await auth();
-
-
-      if (!user || !user.userId) throw new Error("Unauthorized");
-
-      // If you throw, the user will not be able to upload
-      // eslint-disable-next-line @typescript-eslint/only-throw-error
-      if (!user) throw new UploadThingError("Unauthorized");
-
-      // Whatever is returned here is accessible in onUploadComplete as `metadata`
+      if (!user?.userId) throw new Error("Unauthorized");
       return { userId: user.userId };
     })
     .onUploadComplete(async ({ metadata, file }) => {
-      // This code RUNS ON YOUR SERVER after upload
-      console.log("Upload complete for userId:", metadata.userId);
-    
       await db.insert(images).values({
         name: file.name,
         url: file.url,
         userId: metadata.userId,
-      })
-      
-
-      // !!! Whatever is returned here is sent to the clientside `onClientUploadComplete` callback
-      return { uploadedBy: metadata.userId };
+      });
+    }),
+  audioUploader: f({
+    audio: {
+      maxFileSize: "1GB",
+      maxFileCount: 1,
+    },
+  })
+    .middleware(async ({ req }) => {
+      const user = await auth();
+      if (!user?.userId) throw new Error("Unauthorized");
+      return { userId: user.userId };
+    })
+    .onUploadComplete(async ({ metadata, file }) => {
+      await db.insert(audio).values({
+        text: file.name,
+        url: file.url,
+        userId: metadata.userId,
+      });
     }),
 } satisfies FileRouter;
 

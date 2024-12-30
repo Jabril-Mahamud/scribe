@@ -36,3 +36,23 @@ export const images = createTable(
     nameIndex: index("name_idx").on(example.name),
   })
 );
+
+export const audio = createTable(
+  "audio",
+  {
+    id: integer("id").primaryKey().generatedByDefaultAsIdentity(),
+    text: varchar("text", { length: 256 }).notNull(),
+    url: varchar("url", { length: 1024 }).notNull(),
+    userId: varchar("user_id", { length: 256 }).notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).$onUpdate(
+      () => new Date()
+    ),
+  },
+  (audio) => ({
+    nameIndex: index("audio_name_idx").on(audio.text),
+  })
+);
+
