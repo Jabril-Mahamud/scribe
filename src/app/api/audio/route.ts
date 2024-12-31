@@ -11,7 +11,7 @@ interface VoiceSettings {
   similarity_boost: number;
 }
 
-const VOICE_ID = 'gOkFV1JMCt0G0n9xmBwV';
+const VOICE_ID = process.env.VOICE_ID;
 
 export async function POST(request: NextRequest) {
   try {
