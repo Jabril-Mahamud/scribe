@@ -53,6 +53,7 @@ export const audio = createTable(
   },
   (audio) => ({
     nameIndex: index("audio_name_idx").on(audio.text),
+    urlIndex: index("audio_url_idx").on(audio.url),
   })
 );
 

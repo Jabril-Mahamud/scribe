@@ -1,58 +1,18 @@
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "../../../components/ui/table";
+// File: app/audio/history/page.tsx
 import { getMyAudio } from "~/server/queries";
-import { AudioWaveform } from "lucide-react";
+import { AudioTableClient } from "../../_components/AudioTableClient";
 
-type Audio = {
-    id: number;
-    text: string;
-    url: string;
-    createdAt: Date;
-};
+export default async function AudioHistoryPage() {
+    const audios = await getMyAudio();
 
-export default async function AudioTable() {
-    const audioFiles = await getMyAudio();
-    
     return (
-        <div className="p-4">
-            <Table>
-                <TableHeader>
-                    <TableRow>
-                        <TableHead>File</TableHead>
-                        <TableHead>Transcription</TableHead>
-                        <TableHead>Date</TableHead>
-                        <TableHead>Actions</TableHead>
-                    </TableRow>
-                </TableHeader>
-                <TableBody>
-                    {audioFiles.map((audio: Audio) => (
-                        <TableRow key={audio.id}>
-                            <TableCell className="flex items-center gap-2">
-                                <AudioWaveform className="h-4 w-4" />
-                                {audio.text}
-                            </TableCell>
-                            <TableCell>{audio.text}</TableCell>
-                            <TableCell>{audio.createdAt.toLocaleString()}</TableCell>
-                            <TableCell>
-                                <a
-                                    href={audio.url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="text-blue-500 hover:underline"
-                                >
-                                    Download
-                                </a>
-                            </TableCell>
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
+        <div className="flex justify-center items-center min-h-screen bg-gradient-to-b from-blue-100 to-blue-300">
+            <div className="p-6 w-full max-w-3xl bg-white shadow-xl rounded-lg">
+                <h1 className="text-4xl font-bold text-blue-800 mb-6 text-center">
+                    Your Audio History
+                </h1>
+                <AudioTableClient audios={audios} />
+            </div>
         </div>
     );
 }
