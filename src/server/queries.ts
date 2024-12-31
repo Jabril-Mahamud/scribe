@@ -72,7 +72,6 @@ export async function getMyAudio() {
   if (!user?.userId) throw new Error("Unauthorized");
 
   return await db.query.audio.findMany({
-    where: (model, { eq }) => eq(model.userId, user.userId),
     orderBy: (model, { desc }) => desc(model.id),
-  });
+});
 }
