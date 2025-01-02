@@ -1,17 +1,31 @@
 "use client";
-import { useAuth, useUser } from "@clerk/nextjs";
-import posthog from "posthog-js";
-import { PostHogProvider } from "posthog-js/react";
-import { useEffect } from "react";
 
-if (typeof window !== "undefined") {
-  posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY!, {
-    api_host: "/ingest",
-    ui_host: "https://eu.i.posthog.com",
-  });
-}
+import { useAuth, useUser } from "@clerk/nextjs";
+import { PostHogProvider } from "posthog-js/react";
+import posthog from "posthog-js";
+import { useEffect, useState } from "react";
 
 export function CSPostHogProvider({ children }: { children: React.ReactNode }) {
+  const [isPostHogReady, setIsPostHogReady] = useState(false);
+
+  useEffect(() => {
+    // Only initialize PostHog once on the client side
+    if (!posthog.__loaded) {
+      posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY!, {
+        api_host: "/ingest",
+        ui_host: "https://eu.i.posthog.com",
+        loaded: (posthog) => {
+          setIsPostHogReady(true);
+        }
+      });
+    } else {
+      setIsPostHogReady(true);
+    }
+  }, []);
+
+  // Only render the provider when PostHog is ready
+  if (!isPostHogReady) return null;
+
   return (
     <PostHogProvider client={posthog}>
       <PostHogAuthWrapper>{children}</PostHogAuthWrapper>
@@ -20,19 +34,19 @@ export function CSPostHogProvider({ children }: { children: React.ReactNode }) {
 }
 
 function PostHogAuthWrapper({ children }: { children: React.ReactNode }) {
-  const auth = useAuth();
-  const userInfo = useUser();
+  const { isSignedIn } = useAuth();
+  const { user } = useUser();
 
   useEffect(() => {
-    if (userInfo.user) {
-      posthog.identify(userInfo.user.id, {
-        email: userInfo.user.emailAddresses[0]?.emailAddress,
-        name: userInfo.user.fullName,
+    if (user) {
+      posthog.identify(user.id, {
+        email: user.emailAddresses[0]?.emailAddress,
+        name: user.fullName,
       });
-    } else if (!auth.isSignedIn) {
+    } else if (!isSignedIn) {
       posthog.reset();
     }
-  }, [auth, userInfo]);
+  }, [isSignedIn, user]);
 
   return children;
 }
